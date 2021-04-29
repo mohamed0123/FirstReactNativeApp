@@ -10,14 +10,14 @@ import {
   Button,
   TouchableOpacity,
 } from "react-native";
-
+import AppBar from "./AppBar";
 const Separator = () => <View style={styles.separator} />;
-export default function DetailesComponent(props){
+export default function DetailesComponent({history , location}){
   const [macAddress, setMacAddress] = useState("");
   const [ipAddress, setIpAddress] = useState("");
 
   return  ( <SafeAreaView style={styles.container}>
-  <AppBar title={props.item.name} />
+  <AppBar title={location.state.name} />
   <View style={styles.todo}>
     <TextInput
       placeholder="Add a Mac/IP"

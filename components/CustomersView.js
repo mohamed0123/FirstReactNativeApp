@@ -19,7 +19,7 @@ const Item = ({ item, onPress, backgroundColor, textColor }) => (
     <Text style={[styles.title, textColor]}>{item.name}</Text>
   </TouchableOpacity>
 );
-export default function CustomersView(props) {
+export default function CustomersView({ history }) {
   const [selectedId, setSelectedId] = useState(null);
   const [title, setTitle] = useState("");
   const [data, setData] = useState([]);
@@ -61,14 +61,16 @@ export default function CustomersView(props) {
     return (
       <Item
         item={item}
-        onPress={() => navigateToDetailesComponents(item)}
+        onPress={
+          () => history.push("/detailes" , item) /*navigateToDetailesComponents(item)*/
+        }
         backgroundColor={{ backgroundColor }}
         textColor={{ color }}
       />
     );
   };
 
-  const navigateToDetailesComponents = ({ history, item }) => {
+  const navigateToDetailesComponents = ({ item }) => {
     setSelectedId(item.id);
   };
 
