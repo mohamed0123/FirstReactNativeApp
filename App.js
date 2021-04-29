@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import {
   FlatList,
   SafeAreaView,
@@ -29,32 +29,14 @@ const Item = ({ item, onPress, backgroundColor, textColor }) => (
 );
 
 const App = () => {
-  // const permissions = await StorageAccessFramework.requestDirectoryPermissionsAsync();
-  // if (permissions.granted) {
-  //   // Gets SAF URI from response
-  //   const uri = permissions.directoryUri;
-
-  //   // Gets all files inside of selected directory
-  //   const files = await StorageAccessFramework.readDirectoryAsync(uri);
-  //   // alert(`Files inside ${uri}:\n\n${JSON.stringify(files)}`);
-  // }
-  // const albumUri = StorageAccessFramework.getUriForDirectoryInRoot("kimo");
-
   const [selectedId, setSelectedId] = useState(null);
   const [title, setTitle] = useState("");
-
-  // content = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 });
-
-  const [data, setData] = useState(usersData);
+  const [data, setData] = useState([]);
   const loadData = async () => {
     try {
       let dataToLoad = "[]";
-      // console.log(path);
       dataToLoad = await FileSystem.readAsStringAsync(path);
-      // console.log("dataToLoad >>> ");
-      // console.log(dataToLoad);
       if (dataToLoad && dataToLoad.length > 0) {
-        // console.log(dataToLoad);
         const previousData = JSON.parse(dataToLoad) || [];
         setData([...previousData]);
       }
@@ -62,42 +44,20 @@ const App = () => {
       console.log(e);
     }
   };
-
-  loadData()
-
-  // RNFS.readFile(filePath, "ascii")
-  //   .then((res) => {
-  //     setData([...JSON.parse(res), { id: Date.now(), name: title }]);
-  //   })
-  //   .catch((err) => {
-  //     console.log(err.message, err.code);
-  //   });
+  useEffect(() => {
+    loadData();
+  }, []);
 
   const addItem = async () => {
     if (title.length > 0) {
-      // Add todo to the list
-      // const uuid = uuidv4();
-
-      // setData([...data, { id: Date.now().toString(), name: title }]);
-      // FileSystem.writeAsStringAsync("data.json", data);
-      
       try {
-        const dataToSave = JSON.stringify([...data, { id: Date.now().toString(), name: title }]);
+        const newItem = { id: Date.now().toString(), name: title };
+        setData([...data, newItem]);
+        const dataToSave = JSON.stringify([...data, newItem]);
         await FileSystem.writeAsStringAsync(path, dataToSave);
       } catch (e) {
         console.log(e);
       }
-      // console.log(result);
-      // fs.writeFileSync('./assets/data.json' , data)
-      // clear the value of the textfield
-      // RNFS.writeFile(filePath, JSON.stringify(data), "utf8")
-      //   .then((success) => {
-      //     alert('success')
-      //   })
-      //   .catch((err) => {
-      //     console.log(err.message);
-      //     alert(err.message)
-      //   });
       setTitle("");
     }
   };
