@@ -10,130 +10,22 @@ import {
   Button,
   TouchableOpacity,
 } from "react-native";
+import { NativeRouter, Route, Switch, Link } from "react-router-native";
 import AppBar from "./components/AppBar";
-// import { v4 as uuidv4 } from 'uuid';
-// const fs = require('fs');
-import * as FileSystem from "expo-file-system";
-// const { StorageAccessFramework } = FileSystem;
+import DetailesComponent from "./components/DetailesComponent";
+import CustomersView from './components/CustomersView';
 
-// import * as RNFS from "react-native-fs";
 
-// const filePath = RNFS.DocumentDirectoryPath + "/kimoUsersData.json";
-const path = FileSystem.documentDirectory + "kimo_customers.json";
-const Item = ({ item, onPress, backgroundColor, textColor }) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-    <Text style={[styles.title, textColor]}>{item.name}</Text>
-  </TouchableOpacity>
-);
-const Separator = () => <View style={styles.separator} />;
 const App = () => {
-  const [selectedId, setSelectedId] = useState(null);
-  const [title, setTitle] = useState("");
-  const [macAddress, setMacAddress] = useState("");
-  const [ipAddress, setIpAddress] = useState("");
-  const [data, setData] = useState([]);
-  const loadData = async () => {
-    try {
-      let dataToLoad = "[]";
-      dataToLoad = await FileSystem.readAsStringAsync(path);
-      if (dataToLoad && dataToLoad.length > 0) {
-        const previousData = JSON.parse(dataToLoad) || [];
-        setData([...previousData]);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  const addItem = async () => {
-    if (title.length > 0) {
-      try {
-        const newItem = { id: Date.now().toString(), name: title };
-        setData([...data, newItem]);
-        const dataToSave = JSON.stringify([...data, newItem]);
-        await FileSystem.writeAsStringAsync(path, dataToSave);
-      } catch (e) {
-        console.log(e);
-      }
-      setTitle("");
-    }
-  };
-
-  const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? "#CBCDCB" : "#141514";
-    const color = item.id === selectedId ? "black" : "white";
-
-    return (
-      <Item
-        item={item}
-        onPress={() => detailesComponents(item)}
-        backgroundColor={{ backgroundColor }}
-        textColor={{ color }}
-      />
-    );
-  };
-
-  const detailesComponents = (item) => {
-    setSelectedId(item.id);
-    return (
-      <SafeAreaView style={styles.container}>
-        <AppBar title={item.name} />
-        <View style={styles.todo}>
-          <TextInput
-            placeholder="Add a Mac/IP"
-            value={macAddress}
-            onChangeText={(value) => setTitle(value)}
-            style={styles.textbox}
-          />
-          <TextInput
-            placeholder="Add a Mac/IP"
-            value={ipAddress}
-            onChangeText={(value) => setTitle(value)}
-            style={styles.textbox}
-          />
-          <Button title="Add" color="#7F39FB" onPress={() => addMacIpItem()} />
-        </View>
-        <Separator />
-      </SafeAreaView>
-    );
-  };
-
-  const CustomersView = () => {
-    return (
-      <SafeAreaView style={styles.marginBtooem}>
-        <AppBar title="Kimo Customers" />
-        <View style={styles.todo}>
-          <TextInput
-            placeholder="Add a Customer"
-            value={title}
-            onChangeText={(value) => setTitle(value)}
-            style={styles.textbox}
-          />
-          <Button
-            borderRadius="50%"
-            padding="0"
-            title="Add"
-            color="#D75921"
-            onPress={() => addItem()}
-          />
-        </View>
-        <FlatList
-          data={data}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          extraData={selectedId}
-        />
-        
-      </SafeAreaView>
-    );
-  };
   return (
-    <SafeAreaView style={styles.container}>
-      <CustomersView></CustomersView>
-    </SafeAreaView>
+    <NativeRouter>
+      <SafeAreaView style={styles.container}>
+        <Switch>
+          <Route exact path="/" component={CustomersView} />
+          <Route exact path="/detailes" component={DetailesComponent} />
+        </Switch>
+      </SafeAreaView>
+    </NativeRouter>
   );
 };
 
@@ -141,45 +33,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
-  },
-  item: {
-    padding: 20,
-    marginVertical: 1,
-    //marginHorizontal: 16,
-    borderRadius: 15,
-  },
-  title: {
-    fontSize: 32,
-  },
-  todo: {
-    flexDirection: "row",
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  textbox: {
-    borderWidth: 1,
-    borderColor: "#7F39FB",
-    borderRadius: 8,
-    padding: 10,
-    margin: 10,
-    width: "80%",
-  },
-  btn: {
-    borderWidth: 1,
-    borderColor: "#D75921",
-    borderRadius: 50,
-    padding: 2,
-    margin: 2,
-  },
-  separator: {
-    marginVertical: 8,
-    borderBottomColor: "#737373",
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  },
-  marginBtooem : {
-    marginBottom:"10%",
-
   }
 });
 
