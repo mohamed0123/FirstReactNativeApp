@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
+
 import {
   FlatList,
   SafeAreaView,
@@ -7,7 +9,6 @@ import {
   View,
   TextInput,
   Text,
-  Button,
   TouchableOpacity,
 } from "react-native";
 import AppBar from "./AppBar";
@@ -15,37 +16,71 @@ const Separator = () => <View style={styles.separator} />;
 export default function DetailesComponent({ history, location }) {
   const [macAddress, setMacAddress] = useState("");
   const [ipAddress, setIpAddress] = useState("");
+  const [type, setType] = useState("");
+  const LeftContent = props => <Avatar.Icon {...props} icon="camera" />
+
+  const CardItem = () => {
+  
+
+    return (
+      <Card>
+      {/* <Card.Title title="Card Title" subtitle="Card Subtitle" left={LeftContent} /> */}
+      <Card.Content>
+        <Title>Card title</Title>
+        <Paragraph>Card content</Paragraph>
+        <Paragraph>Card content</Paragraph>
+      </Card.Content>
+      {/* <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
+      <Card.Actions>
+        <Button>Cancel</Button>
+        <Button>Ok</Button>
+      </Card.Actions> */}
+    </Card>
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      <AppBar title={location.state.name} />
+      <AppBar title={location.state.currentItem.name} />
       <View style={styles.todo}>
         <TextInput
-          placeholder="Add a Mac/IP"
+          placeholder="Mac"
           value={macAddress}
-          onChangeText={(value) => setTitle(value)}
+          onChangeText={(value) => setMacAddress(value)}
           style={styles.textbox}
         />
       </View>
       <View style={styles.todo}>
         <TextInput
-          placeholder="Add a Mac/IP"
+          placeholder="IP"
           value={ipAddress}
-          onChangeText={(value) => setTitle(value)}
+          onChangeText={(value) => setIpAddress(value)}
           style={styles.textbox}
         />
       </View>
 
-      <View style={{ alignItems: "center", flexDirection: "row", justifyContent:"center" }}>
-        <Button
-          title="Add"
-          color="#7F39FB"
-          style={styles.button}
-          onPress={() => addMacIpItem()}
+      <View style={styles.todo}>
+        <TextInput
+          placeholder="Type"
+          value={type}
+          onChangeText={(value) => setType(value)}
+          style={styles.textbox}
         />
       </View>
+      
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => addMacIpItem()}
+      >
+        <Text>Add</Text>
+      </TouchableOpacity>
+    
 
       <Separator />
+
+      <CardItem></CardItem>
+      <CardItem></CardItem>
+      
     </SafeAreaView>
   );
 }
@@ -75,7 +110,12 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   button: {
-    width: "90%", // no matter what value I set here, their width doesn't changes
-    height: 20,
+    alignItems: "center",
+    justifyContent:"center",
+    backgroundColor: "#CBCDCB",
+    width:"50%",
+    marginLeft:"25%",
+    padding: 10,
+    borderRadius:10
   },
 });

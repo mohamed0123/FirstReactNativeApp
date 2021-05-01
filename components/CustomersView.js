@@ -55,17 +55,22 @@ export default function CustomersView({ history }) {
   };
 
   const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? "#CBCDCB" : "#141514";
+    const backgroundColor = item.id === selectedId ? "#CBCDCB" : "#737373";
     const color = item.id === selectedId ? "black" : "white";
 
     return (
       <Item
         item={item}
         onPress={
-          () => history.push("/detailes" , item) /*navigateToDetailesComponents(item)*/
+          () =>
+            history.push("/detailes", {
+              currentItem: item,
+              allData: data,
+            }) /*navigateToDetailesComponents(item)*/
         }
         backgroundColor={{ backgroundColor }}
         textColor={{ color }}
+        
       />
     );
   };
@@ -84,13 +89,14 @@ export default function CustomersView({ history }) {
           onChangeText={(value) => setTitle(value)}
           style={styles.textbox}
         />
-        <Button
-          borderRadius="50%"
-          padding="0"
-          title="Add"
-          color="#D75921"
-          onPress={() => addItem()}
-        />
+    
+<TouchableOpacity
+        style={styles.button}
+        onPress={() => addItem()}
+      >
+        <Text>Add</Text>
+      </TouchableOpacity>
+
       </View>
       <FlatList
         data={data}
@@ -130,13 +136,6 @@ const styles = StyleSheet.create({
     margin: 10,
     width: "80%",
   },
-  btn: {
-    borderWidth: 1,
-    borderColor: "#D75921",
-    borderRadius: 50,
-    padding: 2,
-    margin: 2,
-  },
   separator: {
     marginVertical: 8,
     borderBottomColor: "#737373",
@@ -145,4 +144,13 @@ const styles = StyleSheet.create({
   marginBtooem: {
     marginBottom: "35%",
   },
+  button: {
+    // alignItems: "center",
+    // justifyContent:"center",
+    backgroundColor: "#CBCDCB",
+    // width:"10%",
+    // marginLeft:"25%",
+    padding: 10,
+    borderRadius:10
+  }
 });
