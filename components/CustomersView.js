@@ -43,7 +43,7 @@ export default function CustomersView({ history }) {
   const addItem = async () => {
     if (title.length > 0) {
       try {
-        const newItem = { id: Date.now().toString(), name: title };
+        const newItem = { id: Date.now().toString(), name: title , itemData:[]};
         setData([...data, newItem]);
         const dataToSave = JSON.stringify([...data, newItem]);
         await FileSystem.writeAsStringAsync(path, dataToSave);

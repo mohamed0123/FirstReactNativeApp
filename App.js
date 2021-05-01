@@ -19,9 +19,10 @@ import CustomersView from './components/CustomersView';
 const App = () => {
   return (
     <NativeRouter>
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView>
         <Switch>
           <Route exact path="/" component={CustomersView} />
+          <Route exact path="/customers" component={CustomersView} />
           <Route exact path="/detailes" component={DetailesComponent} />
         </Switch>
       </SafeAreaView>
